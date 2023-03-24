@@ -30,3 +30,18 @@ linters-settings:
     locale: US
   goerr113:
     ignore-tests: true
+  wrapcheck:
+    ignoreSigs:
+      - errors.New
+      - errors.Wrap
+      - errors.Wrapf
+      - errors.Internal
+      - errors.InternalWrap
+      - errors.BadRequest
+      - errors.BadRequestWrap
+      - errors.NotFound
+      - errors.NotFoundWrap
+      - errors.Unauthorized
+      - errors.UnauthorizedWrap
+      - errors.MethodNotAllowed
+      - errors.MethodNotAllowedWrap
