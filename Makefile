@@ -2,6 +2,10 @@
 lint:
 	@golangci-lint run
 
+.PHONY: test
+test:
+	@go test -race -cover ./internal/...
+
 .PHONY: compile
 compile:
 	GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -ldflags="-w -s" -o bin/users ./cmd/ports/main.go
