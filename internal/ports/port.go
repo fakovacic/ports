@@ -1,6 +1,7 @@
 package ports
 
 type Port struct {
+	ID          string    `json:"-"`
 	Name        string    `json:"name"`
 	City        string    `json:"city"`
 	Country     string    `json:"country"`
