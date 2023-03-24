@@ -3,6 +3,7 @@ module github.com/fakovacic/ports
 go 1.20
 
 require (
+	github.com/braintree/manners v0.0.0-20160418043613-82a8879fc5fd
 	github.com/julienschmidt/httprouter v1.3.0
 	github.com/matryer/is v1.4.1
 	github.com/pkg/errors v0.9.1

@@ -1,0 +1,14 @@
+version: '3.5'
+
+services:
+  ports:
+    image: ports:local
+    environment:
+      ENV: local
+    ports:
+      - "8080:8080"
+    networks:
+      - ports
+networks:
+  ports:
+    driver: bridge
