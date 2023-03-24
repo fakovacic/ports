@@ -21,6 +21,14 @@ type Handler struct {
 }
 
 func (h *Handler) writeResponse(w http.ResponseWriter, r *http.Request, resp interface{}) {
+	reqID := ports.GetCtxStringVal(r.Context(), ports.ContextKeyRequestID)
+
+	l := h.config.Log.With().
+		Str("reqID", reqID).
+		Interface("response", resp).
+		Logger()
+	l.Info().Msg("http response")
+
 	bytes, err := json.Marshal(resp)
 	if err != nil {
 		h.writeError(w, r, ErrorResponse{
@@ -47,6 +55,14 @@ type ErrorResponse struct {
 }
 
 func (h *Handler) writeError(w http.ResponseWriter, r *http.Request, er ErrorResponse) {
+	reqID := ports.GetCtxStringVal(r.Context(), ports.ContextKeyRequestID)
+
+	l := h.config.Log.With().
+		Str("reqID", reqID).
+		Interface("response", er).
+		Logger()
+	l.Error().Msg("http response")
+
 	bytes, err := json.Marshal(er)
 	if err != nil {
 		log.Println("marshal", err)

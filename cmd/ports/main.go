@@ -9,6 +9,7 @@ import (
 
 	"github.com/braintree/manners"
 	"github.com/fakovacic/ports/cmd/ports/config"
+	"github.com/fakovacic/ports/internal/ports/handlers/http/middleware"
 	"github.com/julienschmidt/httprouter"
 )
 
@@ -43,7 +44,11 @@ func main() {
 
 	httpServer := manners.NewServer()
 	httpServer.Addr = httpAddr
-	httpServer.Handler = router
+	httpServer.Handler = middleware.ReqID(
+		middleware.Logger(
+			c, router,
+		),
+	)
 
 	errChan := make(chan error, errorChan)
 

@@ -6,8 +6,12 @@ import (
 	"github.com/rs/zerolog"
 )
 
+type ContextKey string
+
 const (
 	ServiceName string = "ports"
+
+	ContextKeyRequestID ContextKey = "requestID"
 )
 
 func NewConfig(env string) *Config {
