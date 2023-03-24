@@ -1,6 +1,7 @@
 package errors
 
 import (
+	goErrors "errors"
 	"net/http"
 
 	"github.com/pkg/errors"
@@ -41,7 +42,9 @@ func Wrap(format string, args ...interface{}) error {
 func Wrapf(err error, format string, args ...interface{}) error {
 	status := http.StatusInternalServerError
 
-	e, ok := err.(Error)
+	var e Error
+
+	ok := goErrors.As(err, &e)
 	if ok {
 		status = e.GetStatus()
 	}

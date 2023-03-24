@@ -27,7 +27,7 @@ func (s *service) Update(ctx context.Context, id string, m *Port) (*Port, error)
 	return m, nil
 }
 
-func validateUpdate(ctx context.Context, m *Port) error {
+func validateUpdate(_ context.Context, m *Port) error {
 	if m.Name == "" {
 		return errors.Wrap("name is required")
 	}

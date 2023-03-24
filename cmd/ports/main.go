@@ -38,9 +38,7 @@ func main() {
 	router.POST("/ports", h.Create)
 	router.PUT("/ports/:id", h.Update)
 
-	var (
-		httpAddr = "0.0.0.0:8080"
-	)
+	httpAddr := "0.0.0.0:8080"
 
 	httpServer := manners.NewServer()
 	httpServer.Addr = httpAddr
@@ -73,5 +71,4 @@ func main() {
 			os.Exit(0)
 		}
 	}
-
 }

@@ -12,7 +12,6 @@ type loggingMiddleware struct {
 	next    ports.Service
 }
 
-// NewLoggingMiddleware creates a new logging middleware.
 func NewLoggingMiddleware(config *ports.Config, next ports.Service) ports.Service {
 	m := loggingMiddleware{
 		service: ports.ServiceName,
@@ -43,6 +42,7 @@ func (m *loggingMiddleware) Create(ctx context.Context, input *ports.Port) (*por
 		Err(err).
 		Msg("service response")
 
+	//nolint
 	return model, err
 }
 
@@ -67,5 +67,6 @@ func (m *loggingMiddleware) Update(ctx context.Context, id string, input *ports.
 		Err(err).
 		Msg("service response")
 
+	//nolint
 	return model, err
 }

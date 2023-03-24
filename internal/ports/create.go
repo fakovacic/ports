@@ -20,7 +20,7 @@ func (s *service) Create(ctx context.Context, m *Port) (*Port, error) {
 	return m, nil
 }
 
-func validateCreate(ctx context.Context, m *Port) error {
+func validateCreate(_ context.Context, m *Port) error {
 	if m.Name == "" {
 		return errors.Wrap("name is required")
 	}

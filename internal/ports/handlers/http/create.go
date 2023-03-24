@@ -2,7 +2,8 @@ package http
 
 import (
 	"encoding/json"
-	"io/ioutil"
+	goErrors "errors"
+	"io"
 	"net/http"
 
 	"github.com/fakovacic/ports/internal/ports"
@@ -18,8 +19,8 @@ type CreateResponse struct {
 	Port *ports.Port `json:"port"`
 }
 
-func (h *Handler) Create(w http.ResponseWriter, r *http.Request, par httprouter.Params) {
-	body, err := ioutil.ReadAll(r.Body)
+func (h *Handler) Create(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+	body, err := io.ReadAll(r.Body)
 	if err != nil {
 		h.writeError(w, r, ErrorResponse{
 			Message: err.Error(),
@@ -43,7 +44,9 @@ func (h *Handler) Create(w http.ResponseWriter, r *http.Request, par httprouter.
 
 	port, err := h.service.Create(r.Context(), req.Port)
 	if err != nil {
-		e, ok := err.(errors.Error)
+		var e errors.Error
+
+		ok := goErrors.As(err, &e)
 		if ok {
 			h.writeError(w, r, ErrorResponse{
 				Message: e.Error(),
