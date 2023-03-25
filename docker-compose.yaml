@@ -2,16 +2,10 @@ version: '3.5'
 
 services:
   ports:
-    image: ports:local
+    build:
+      context: .
     environment:
       ENV: local
       DATA_FILENAME: data.json
     volumes:
       - ./assets/ports.json:/data.json
-    ports:
-      - "8080:8080"
-    networks:
-      - ports
-networks:
-  ports:
-    driver: bridge
