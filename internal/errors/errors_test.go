@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"testing"
 
-	"github.com/fakovacic/ports/internal/ports/errors"
+	"github.com/fakovacic/ports/internal/errors"
 	"github.com/matryer/is"
 )
 

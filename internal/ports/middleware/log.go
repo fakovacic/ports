@@ -23,10 +23,7 @@ func NewLoggingMiddleware(config *ports.Config, next ports.Service) ports.Servic
 }
 
 func (m *loggingMiddleware) Create(ctx context.Context, input *ports.Port) (*ports.Port, error) {
-	reqID := ports.GetCtxStringVal(ctx, ports.ContextKeyRequestID)
-
 	m.config.Log.Info().
-		Str("reqID", reqID).
 		Str("service", m.service).
 		Str("method", "Create").
 		Interface("input", input).
@@ -35,7 +32,6 @@ func (m *loggingMiddleware) Create(ctx context.Context, input *ports.Port) (*por
 	model, err := m.next.Create(ctx, input)
 
 	m.config.Log.Info().
-		Str("reqID", reqID).
 		Str("service", m.service).
 		Str("method", "Create").
 		Interface("model", model).
@@ -47,10 +43,7 @@ func (m *loggingMiddleware) Create(ctx context.Context, input *ports.Port) (*por
 }
 
 func (m *loggingMiddleware) Update(ctx context.Context, id string, input *ports.Port) (*ports.Port, error) {
-	reqID := ports.GetCtxStringVal(ctx, ports.ContextKeyRequestID)
-
 	m.config.Log.Info().
-		Str("reqID", reqID).
 		Str("service", m.service).
 		Str("method", "Update").
 		Str("id", id).
@@ -60,7 +53,6 @@ func (m *loggingMiddleware) Update(ctx context.Context, id string, input *ports.
 	model, err := m.next.Update(ctx, id, input)
 
 	m.config.Log.Info().
-		Str("reqID", reqID).
 		Str("service", m.service).
 		Str("method", "Update").
 		Interface("model", model).

@@ -5,6 +5,9 @@ services:
     image: ports:local
     environment:
       ENV: local
+      DATA_FILENAME: data.json
+    volumes:
+      - ./assets/ports.json:/data.json
     ports:
       - "8080:8080"
     networks:

@@ -3,7 +3,7 @@ package ports
 import (
 	"context"
 
-	"github.com/fakovacic/ports/internal/ports/errors"
+	"github.com/fakovacic/ports/internal/errors"
 )
 
 func (s *service) Create(ctx context.Context, m *Port) (*Port, error) {

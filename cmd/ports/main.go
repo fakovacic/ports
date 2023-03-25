@@ -1,21 +1,22 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"log"
 	"os"
 	"os/signal"
 	"syscall"
 
-	"github.com/braintree/manners"
 	"github.com/fakovacic/ports/cmd/ports/config"
-	"github.com/fakovacic/ports/internal/ports/handlers/http/middleware"
-	"github.com/julienschmidt/httprouter"
+	"github.com/fakovacic/ports/internal/parser"
 )
 
 const errorChan int = 1
 
 func main() {
+	ctx := context.Background()
+
 	c, err := config.NewConfig()
 	if err != nil {
 		log.Fatal(err)
@@ -31,32 +32,23 @@ func main() {
 		log.Fatal(err)
 	}
 
-	h := config.NewHandlers(c, service)
+	input, err := os.Open(os.Getenv("DATA_FILENAME"))
+	if err != nil {
+		log.Fatalf("failed to load file: %v", err)
+	}
 
-	router := httprouter.New()
+	// validate if file is json
 
-	router.POST("/ports", h.Create)
-	router.PUT("/ports/:id", h.Update)
-
-	httpAddr := "0.0.0.0:8080"
-
-	httpServer := manners.NewServer()
-	httpServer.Addr = httpAddr
-	httpServer.Handler = middleware.ReqID(
-		middleware.Logger(
-			c, router,
-		),
-	)
+	parser := parser.New(service)
 
 	errChan := make(chan error, errorChan)
 
 	go func() {
-		c.Log.Debug().Msgf("HTTP service listening on %s", httpAddr)
-		errChan <- httpServer.ListenAndServe()
+		errChan <- parser.Parse(ctx, input)
 	}()
 
 	signalChan := make(chan os.Signal, 1)
-	signal.Notify(signalChan, syscall.SIGINT, syscall.SIGTERM)
+	signal.Notify(signalChan, syscall.SIGKILL, syscall.SIGTERM)
 
 	for {
 		select {
@@ -67,7 +59,6 @@ func main() {
 		case s := <-signalChan:
 			c.Log.Debug().Msgf(fmt.Sprintf("Captured %v. Exiting...", s))
 
-			httpServer.BlockingClose()
 			os.Exit(0)
 		}
 	}
