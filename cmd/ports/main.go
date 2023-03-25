@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"fmt"
 	"log"
 	"os"
 	"os/signal"
@@ -48,18 +47,20 @@ func main() {
 	}()
 
 	signalChan := make(chan os.Signal, 1)
-	signal.Notify(signalChan, syscall.SIGKILL, syscall.SIGTERM)
+	signal.Notify(signalChan, syscall.SIGTERM)
 
-	for {
-		select {
-		case err := <-errChan:
-			if err != nil {
-				c.Log.Fatal().Msg(err.Error())
-			}
-		case s := <-signalChan:
-			c.Log.Debug().Msgf(fmt.Sprintf("Captured %v. Exiting...", s))
-
-			os.Exit(0)
+	select {
+	case err := <-errChan:
+		if err != nil {
+			c.Log.Fatal().Msg(err.Error())
 		}
+
+		c.Log.Info().Msgf("done parsing file")
+
+		break
+	case s := <-signalChan:
+		c.Log.Debug().Msgf("Captured %v. Exiting...", s)
+
+		os.Exit(0)
 	}
 }
