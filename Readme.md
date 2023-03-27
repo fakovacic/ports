@@ -15,3 +15,5 @@ docker-compose up
 ( seems same as unlocs field, but defined as slice ) or maybe code from struct, did not check if unique
 
 - add log wrapper - currently using zerolog struct directly
+
+- define interface Ports in parser service with only methods used by parser
