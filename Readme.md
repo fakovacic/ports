@@ -17,3 +17,9 @@ docker-compose up
 - add log wrapper - currently using zerolog struct directly
 
 - define interface Ports in parser service with only methods used by parser
+
+- remove unused errors functions
+
+- store folder can be extracted from ports - ports store implementation can be defined in additional /store/inmem/ports folder
+
+- create models folder, adding only bussiness logic models ( without json or other tags ), additionaly adding models specific for each layer ( parsing and store with appropriate tags is needed ) 
